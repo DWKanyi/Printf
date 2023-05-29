@@ -16,43 +16,36 @@ int _printf(const char *format, ...)
 	int i = 0;
 	char c;
 
-	while (*format != '\0')
+	for (; *format; format++)
 	{
 		if (*format == '%')
 		{
-			format++;
-			switch (*format)
-			{
-			case 'c':
-				c = va_arg(ap, int);
-				putchar(c);
-				i++;
-				break;
-
-			case 's':
-			{
-				char *a = va_arg(ap, char*);
-
-				while (*a != '\0')
-				{
-					putchar(*a);
-					i++;
-					a++;
-				}
-			}
-			break;
-
-			case '%':
-				putchar('%');
-				i++
-				break;
-			}
-		}
-		else
 			putchar(*format);
 			i++;
-
+			continue;
+		}
 		format++;
+		if (*format == 'c')
+		{
+			c = va_args(ap, int);
+			putchar(c);
+			i++;
+		}
+		else if (*format == 's')
+		{
+			char *a = va_args(ap, char*);
+
+			while (*a)
+			{
+				putchar(*a++);
+				i++;
+			}
+		}
+		else if (*format == '%')
+		{
+			putchar('%');
+			i++;
+		}
 	}
 	va_end(ap);
 	return (i);
